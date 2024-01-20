@@ -1,0 +1,23 @@
+---
+sidebar_position: 2
+---
+
+# インストールとか
+
+## Install
+
+```bash
+$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+```
+
+## Update
+
+```bash
+$ rustup update
+```
+
+## uninstall
+
+```bash
+$ rustup self uninstall
+```
