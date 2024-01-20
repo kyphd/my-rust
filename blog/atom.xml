@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://kyphd.github.io/my-rust/blog</id>
+    <title>My Rust Blog</title>
+    <updated>2024-01-20T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://kyphd.github.io/my-rust/blog"/>
+    <subtitle>My Rust Blog</subtitle>
+    <icon>https://kyphd.github.io/my-rust/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[First Blog]]></title>
+        <id>https://kyphd.github.io/my-rust/blog/first-blog</id>
+        <link href="https://kyphd.github.io/my-rust/blog/first-blog"/>
+        <updated>2024-01-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[RUSTをちょっとずつ進める。Documentにまとめられないメモやつまづきポイントはこちら。]]></summary>
+        <content type="html"><![CDATA[<p>RUSTをちょっとずつ進める。Documentにまとめられないメモやつまづきポイントはこちら。</p>]]></content>
+        <author>
+            <name>KY</name>
+            <uri>https://github.com/kyphd</uri>
+        </author>
+        <category label="hello" term="hello"/>
+    </entry>
+</feed>

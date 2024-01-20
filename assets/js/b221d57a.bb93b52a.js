@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_rust=self.webpackChunkmy_rust||[]).push([[429],{6401:e=>{e.exports=JSON.parse('[{"label":"hello","permalink":"/my-rust/blog/tags/hello","count":1}]')}}]);
