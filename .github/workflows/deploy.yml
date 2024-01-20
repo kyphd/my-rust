@@ -1,49 +1,41 @@
 name: Deploy to GitHub Pages
 
 on:
-  pull_request:
-    branches: [main]
   push:
-    branches: [main]
-
-permissions:
-  contents: write
+    branches:
+      - main
 
 jobs:
-  test-deploy:
-    if: github.event_name != 'push'
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
+
       - name: Install dependencies
         run: npm ci
-      - name: Test build website
-        run: npm build
+      - name: Build website
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: build
+
   deploy:
-    if: github.event_name != 'pull_request'
+    name: Deploy to GitHub Pages
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: npm
-      - uses: webfactory/ssh-agent@v0.5.0
-        with:
-          ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY }}
       - name: Deploy to GitHub Pages
-        env:
-          USE_SSH: true
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "gh-actions"
-          npm ci
-          npm deploy
+        id: deployment
+        uses: actions/deploy-pages@v1
