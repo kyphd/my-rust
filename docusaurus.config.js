@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'My Rust',
   tagline: 'Rust documentation for me.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/cuddlyferris.svg',
 
   // Set the production url of your site here
   url: 'https://kyphd.github.io',
@@ -70,7 +70,7 @@ const config = {
         title: 'My Rust',
         logo: {
           alt: 'My Rust Logo',
-          src: 'img/logo.svg',
+          src: 'img/cuddlyferris.svg',
         },
         items: [
           {

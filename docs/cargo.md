@@ -7,10 +7,13 @@ sidebar_position: 3
 CargoはRustのビルドシステム兼パッケージマネージャ。
 
 - `cargo new`を使ってプロジェクトを作成できる
+    -  利用可能なオプションを確認するには`cargo new --help`を実行。
 - `cargo build`を使ってプロジェクトをビルドできる。`target/debug`に作成される。
 - `cargo build --release`でリリース版をビルド。`target/release`に作成される。
 - `cargo run`を使うとプロジェクトのビルドと実行を1ステップで行える
 - `cargo check`を使うとバイナリを生成せずにプロジェクトをビルドして、エラーがないか確認できる
+- `cargo update`：クレートをアップグレード
+- `cargo doc --open`: すべての依存クレートが提供するドキュメントをローカルでビルドしてブラウザで開く
 
 ```bash
 $ cargo --version
