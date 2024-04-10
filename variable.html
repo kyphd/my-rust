@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found</title>
-        <base href="/">
+        <title>変数</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html" class="active"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,14 +173,130 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="変数"><a class="header" href="#変数">変数</a></h1>
+<h2 id="宣言"><a class="header" href="#宣言">宣言</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 5;  // 不変変数
+x = 6;      // エラー
+
+let mut y = 5;  // mut で可変に
+y = 7;          // OK
+
+const MAX_POINTS: u32 = 100_000;    // 定数
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li>変数名にはスネークケース<code>snake_case</code>を使用</li>
+<li>定数名には大文字のスネークケース<code>SCREAMING_SNAKE_CASE</code>を使用。</li>
+</ul>
+<h2 id="シャドーイング"><a class="header" href="#シャドーイング">シャドーイング</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 5;
+let x = x + 1;      // シャドーイング, xを覆い隠せる
+{
+    let x = x * 2;
+    println!("The value of x in the inner scope is: {}", x);    // 12
+}
+
+println!("The value of x is: {}", x);   // 6
+<span class="boring">}</span></code></pre></pre>
+<p><code>mut</code>と上書きのもう一つの違いは、再度<code>let</code>キーワードを使用したら、実効的には新しい変数を生成していることになるので、 値の型を変えつつ、同じ変数名を使いまわせる。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let spaces = "   ";
+let spaces = spaces.len();
+<span class="boring">}</span></code></pre></pre>
+<p><code>mut</code>だとエラーになる。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut spaces = "   ";
+spaces = spaces.len();      // エラー
+<span class="boring">}</span></code></pre></pre>
+<h2 id="データ型"><a class="header" href="#データ型">データ型</a></h2>
+<h3 id="基本的な型"><a class="header" href="#基本的な型">基本的な型</a></h3>
+<ul>
+<li>ブール型 - bool は true または false を表します</li>
+<li>符号なし整数型 - u8 u32 u64 u128 は正の整数を表します</li>
+<li>符号付き整数型 - i8 i32 i64 i128 は正と負の整数を表します</li>
+<li>ポインタサイズ整数型 - usize isize はメモリ内のインデックスとサイズを表します</li>
+<li>浮動小数点数型 - f32 f64</li>
+<li>タプル型 - (value, value, ...) スタック上の固定された値の組を渡すために使用されます</li>
+<li>配列型 - コンパイル時に長さが決まる同じ要素のコレクション</li>
+<li>スライス型 - 実行時に長さが決まる同じ要素のコレクション</li>
+<li>str(string slice) - 実行時に長さが決まるテキスト</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>bool			// 真偽値(true/false)
+i8			// 符号付き8ビット整数
+u8			// 符号無し8ビット整数
+i16			// 符号付き16ビット整数
+u16			// 符号無し16ビット整数
+i32			// 符号付き32ビット整数
+u32			// 符号無し32ビット整数
+i64			// 符号付き64ビット整数
+u64			// 符号無し64ビット整数
+i128			// 符号付き128ビット整数
+u128			// 符号無し128ビット整数
+isize			// ポインタサイズと同じ符号付き整数
+usize			// ポインタサイズと同じ符号無し整数
+f32			// 32ビット浮動小数点数
+f64			// 64ビット浮動小数点数
+char			// 文字(U+0000～U+D7FF, U+E000～U+10FFFF)
+str			// 文字列(&amp;strとして使用することが多い)
+(type, type, ...)	// タプル
+[type; len]		// 配列
+Vec&lt;type&gt;		// ベクタ
+&amp;type			// typeへの参照
+&amp;mut type		// typeへのミュータブルな参照
+&amp;[type]			// type型要素を持つスライス
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 12; // デフォルトでは i32
+let a = 12u8;  // 数値の後に型を付加することでも指定できる。
+let b = 4.3; // デフォルトでは f64
+let c = 4.3f32;
+let bv = true;
+let t = (13, false);
+let sentence = "hello world!";
+println!(
+    "{} {} {} {} {} {} {} {}",
+    x, a, b, c, bv, t.0, t.1, sentence
+);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="型変換"><a class="header" href="#型変換">型変換</a></h3>
+<p><code>as</code>を使う。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let a = 13u8;
+let b = 7u32;
+let c = a as u32 + b;   // u8とu32を混ぜるとエラー。型変換必要
+println!("{}", c);
+
+let t = true;
+println!("{}", t as u8);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="配列"><a class="header" href="#配列">配列</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let nums: [i32; 3] = [1, 2, 3];
+println!("{:?}", nums);
+println!("{}", nums[1]);
+<span class="boring">}</span></code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="cargo.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next prefetch" href="function.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -189,7 +304,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="cargo.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next prefetch" href="function.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

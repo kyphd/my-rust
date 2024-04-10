@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found</title>
-        <base href="/">
+        <title>Cargo</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html" class="active"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,14 +173,69 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="cargo"><a class="header" href="#cargo">Cargo</a></h1>
+<p>CargoはRustのビルドシステム兼パッケージマネージャ。</p>
+<ul>
+<li><code>cargo new</code>を使ってプロジェクトを作成できる
+<ul>
+<li>利用可能なオプションを確認するには<code>cargo new --help</code>を実行。</li>
+</ul>
+</li>
+<li><code>cargo build</code>を使ってプロジェクトをビルドできる。<code>target/debug</code>に作成される。</li>
+<li><code>cargo build --release</code>でリリース版をビルド。<code>target/release</code>に作成される。</li>
+<li><code>cargo run</code>を使うとプロジェクトのビルドと実行を1ステップで行える</li>
+<li><code>cargo check</code>を使うとバイナリを生成せずにプロジェクトをビルドして、エラーがないか確認できる</li>
+<li><code>cargo update</code>：クレートをアップグレード</li>
+<li><code>cargo doc --open</code>: すべての依存クレートが提供するドキュメントをローカルでビルドしてブラウザで開く</li>
+<li><code>cargo search</code>: クレートの最新バージョンを検索</li>
+</ul>
+<pre><code class="language-bash">$ cargo --version
+</code></pre>
+<h2 id="プロジェクトの作成"><a class="header" href="#プロジェクトの作成">プロジェクトの作成</a></h2>
+<pre><code class="language-bash">$ cargo new hello
+$ cd hello
+</code></pre>
+<h3 id="cargotoml"><a class="header" href="#cargotoml">Cargo.toml</a></h3>
+<p>Cargoの設定フォーマット</p>
+<pre><code class="language-toml title=&quot;Cargo.toml&quot;">[package]
+name = "hello"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+</code></pre>
+<h3 id="srcmainrs"><a class="header" href="#srcmainrs">src/main.rs</a></h3>
+<pre><pre class="playground"><code class="language-rust title=&quot;src/main.rs&quot;">fn main() {
+    println!("Hello, world!");
+}</code></pre></pre>
+<h2 id="プロジェクトのビルドと実行"><a class="header" href="#プロジェクトのビルドと実行">プロジェクトのビルドと実行</a></h2>
+<h3 id="ビルド"><a class="header" href="#ビルド">ビルド</a></h3>
+<pre><code class="language-bash">$ cargo build
+   Compiling hello v0.1.0 (/Users/ky/Desktop/rust/test/hello)
+    Finished dev [unoptimized + debuginfo] target(s) in 3.51s
+</code></pre>
+<p>実行ファイル<code>target/debug/hello</code>が生成される。</p>
+<pre><code class="language-bash">$ ./target/debug/hello
+Hello, world!
+</code></pre>
+<h3 id="runビルドと実行"><a class="header" href="#runビルドと実行">run（ビルドと実行）</a></h3>
+<pre><code class="language-bash">$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/hello`
+Hello, world!
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="install.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next prefetch" href="variable.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -189,7 +243,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="install.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next prefetch" href="variable.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

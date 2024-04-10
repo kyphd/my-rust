@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>イントロ</title>
+        <title>構造体</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html" class="active"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -173,18 +173,172 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="イントロ"><a class="header" href="#イントロ">イントロ</a></h1>
-<p>RUSTしたいけど、あんまり時間取れないので、ゆっくり学習を進めるための備忘録兼俺的マニュアル。</p>
-<h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
-<p><a href="https://doc.rust-jp.rs/book-ja/">The Rust Programming Language 日本語版</a>に沿ってやっていく。</p>
-<p>まずは<a href="https://tourofrust.com/00_ja.html">rustツアー</a>がいいかも。</p>
+                        <h1 id="構造体"><a class="header" href="#構造体">構造体</a></h1>
+<ul>
+<li>一つの<code>struct</code>はフィールドの集合</li>
+<li>フィールドとはデータ構造とキーワードを紐付ける値。その値はプリミティブ型かデータ構造を指定可能。</li>
+<li>その定義はメモリ上で隣合うデータの配置をコンパイラに伝える設計図の様なもの</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct SeaCreature {
+    // String は構造体である。
+    animal_type: String,
+    name: String,
+    arms: i32,
+    legs: i32,
+    weapon: String,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="メソッド"><a class="header" href="#メソッド">メソッド</a></h2>
+<ul>
+<li>関数(function)と違って、メソッド(method)は特定のデータ型と紐づく関数のこと。</li>
+<li>スタティックメソッド - ある型そのものに紐付き、演算子<code>::</code>で呼び出せる。</li>
+<li>インスタンスメソッド - ある型のインスタンスに紐付き、演算子<code>.</code>で呼び出せる。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    // スタティックメソッドでStringインスタンスを作成する。
+    let s = String::from("Hello world!");
+    // インスタンスを使ってメソッド呼び出す。
+    println!("{} is {} characters long.", s, s.len());
+}</code></pre></pre>
+<h2 id="構造体とメモリ"><a class="header" href="#構造体とメモリ">構造体とメモリ</a></h2>
+<ul>
+<li>コードの中で構造体をインスタンス化する際、フィールドデータはメモリ上で隣り合うように作成される。</li>
+<li>全てのフィールドの値を指定してインスタンス化をする場合、<code>let 変数名 = 構造体名 {...};</code></li>
+<li>構造体のフィールドは演算子<code>.</code>で取り出す。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">struct SeaCreature {
+    animal_type: String,
+    name: String,
+    arms: i32,
+    legs: i32,
+    weapon: String,
+}
+
+fn main() {
+    // SeaCreatureのデータはスタックに入る。
+    let ferris = SeaCreature {
+        // String構造体もスタックに入るが、ヒープに入るデータの参照アドレスが一つ入る。
+        animal_type: String::from("crab"),
+        name: String::from("Ferris"),
+        arms: 2,
+        legs: 4,
+        weapon: String::from("claw"),
+    };
+
+    let sarah = SeaCreature {
+        animal_type: String::from("octopus"),
+        name: String::from("Sarah"),
+        arms: 8,
+        legs: 0,
+        weapon: String::from("none"),
+    };
+    
+    println!(
+        "{} is a {}. They have {} arms, {} legs, and a {} weapon",
+        ferris.name, ferris.animal_type, ferris.arms, ferris.legs, ferris.weapon
+    );
+    println!(
+        "{} is a {}. They have {} arms, and {} legs. They have no weapon..",
+        sarah.name, sarah.animal_type, sarah.arms, sarah.legs
+    );
+}</code></pre></pre>
+<ul>
+<li>ダブルクオートに囲まれたテキスト(例: "Ferris")は読み取り専用データであるため、データメモリに入る。</li>
+<li>関数の呼び出し<code>String::from</code>では構造体<code>String</code>を作成し、この構造体と<code>SeaCreature</code>のフィールドは隣り合う形でスタックに入れられる。フィールドの値は変更可能であり、メモリ上では以下の様に変更される。
+<ol>
+<li>ヒープに変更可能なメモリを作り、テキストを入れる。</li>
+<li>1.で作成した参照アドレスをヒープに保存し、それを<code>String</code>に保存。</li>
+</ol>
+</li>
+<li>最後に、<code>Ferris</code>と<code>Sarah</code>はプログラムの中では固定な位置であるため、スタックに入る。</li>
+</ul>
+<h2 id="タプルライクな構造体"><a class="header" href="#タプルライクな構造体">タプルライクな構造体</a></h2>
+<pre><pre class="playground"><code class="language-rust">struct Location(i32, i32);
+
+fn main() {
+    // これもスタックに入れられる構造体。
+    let loc = Location(42, 32);
+    println!("{}, {}", loc.0, loc.1);
+}</code></pre></pre>
+<h2 id="ユニットライクな構造体"><a class="header" href="#ユニットライクな構造体">ユニットライクな構造体</a></h2>
+<ul>
+<li>フィールドを持たない構造体。</li>
+<li><code>unit</code>は空ユニット()の別名称。</li>
+<li>あまり使われない。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">struct Marker;
+
+fn main() {
+    let _m = Marker;
+}</code></pre></pre>
+<h2 id="列挙型"><a class="header" href="#列挙型">列挙型</a></h2>
+<ul>
+<li>キーワード<code>enum</code>で新しい型を生成することができる。</li>
+<li>いくつかのタグ付された値を持つことができる。</li>
+<li><code>match</code>は保有する全ての列挙値を処理する手助けすることができ、コードの品質を維持することができる。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">#![allow(dead_code)] // この行でコンパイラのwaringsメッセージを止める。
+
+enum Species {
+    Crab,
+    Octopus,
+    Fish,
+    Clam
+}
+
+struct SeaCreature {
+    species: Species,
+    name: String,
+    arms: i32,
+    legs: i32,
+    weapon: String,
+}
+
+fn main() {
+    let ferris = SeaCreature {
+        species: Species::Crab,
+        name: String::from("Ferris"),
+        arms: 2,
+        legs: 4,
+        weapon: String::from("claw"),
+    };
+
+    match ferris.species {
+        Species::Crab =&gt; println!("{} is a crab",ferris.name),
+        Species::Octopus =&gt; println!("{} is a octopus",ferris.name),
+        Species::Fish =&gt; println!("{} is a fish",ferris.name),
+        Species::Clam =&gt; println!("{} is a clam",ferris.name),
+    }
+}</code></pre></pre>
+<h2 id="データを持つ列挙型"><a class="header" href="#データを持つ列挙型">データを持つ列挙型</a></h2>
+<ul>
+<li><code>enum</code>は一個もしくは複数な型のデータを持つことができ、C言語の<code>union</code>の様な表現ができる。</li>
+<li><code>match</code>を用いて列挙値に対するパターンマッチングを行う際、各データを変数名に束縛することができる。</li>
+<li>列挙 のメモリ事情:
+<ul>
+<li>列挙型のメモリサイズはそれが持つ最大要素のサイズと等しい。これにより全ての代入可能な値が同じサイズのメモリ空間を利用することが可能。</li>
+<li>要素の型以外に、各要素には数字値がついており、どのタグであるかについて示している。</li>
+</ul>
+</li>
+<li>その他の事情:
+<ul>
+<li>Rustの列挙はtagged-unionとも言われる。</li>
+<li>複数の型を組み合わせて新しい型を作ることができる。Rustがalgebraic typesを持つと言われる理由。</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="memory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="install.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="operator.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -194,8 +348,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="memory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="install.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="operator.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

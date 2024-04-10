@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found</title>
-        <base href="/">
+        <title>if</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html" class="active"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,14 +173,100 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="if"><a class="header" href="#if">if</a></h1>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 42;
+    if x &lt; 42 {
+        println!("42 より小さい");
+    } else if x == 42 {
+        println!("42 に等しい");
+    } else {
+        println!("42 より大きい");
+    }
+}</code></pre></pre>
+<h2 id="比較演算子"><a class="header" href="#比較演算子">比較演算子</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>例</th><th>説明</th><th>オーバーロードできる？</th></tr></thead><tbody>
+<tr><td>==</td><td>expr == expr</td><td>等価比較</td><td>PartialEq</td></tr>
+<tr><td>!=</td><td>var != expr</td><td>非等価比較</td><td>PartialEq</td></tr>
+<tr><td>&lt;</td><td>expr &lt; expr</td><td>未満比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;</td><td>expr &gt; expr</td><td>より大きい比較</td><td>PartialOrd</td></tr>
+<tr><td>&lt;=</td><td>expr &lt;= expr</td><td>以下比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;=</td><td>expr &gt;= expr</td><td>以上比較</td><td>PartialOrd</td></tr>
+<tr><td>!</td><td>!expr</td><td>ビット反転、または論理反転</td><td>Not</td></tr>
+<tr><td>&amp;&amp;</td><td>expr &amp;&amp; expr</td><td>論理AND</td><td></td></tr>
+<tr><td>||</td><td>expr || expr</td><td>論理OR</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="match"><a class="header" href="#match">match</a></h2>
+<p>値が取り得るすべての条件にマッチさせて、マッチが真であればコードパスを実行する。</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 42;
+
+    match x {
+        0 =&gt; {
+            println!("found zero");
+        }
+        // 複数の値にマッチ
+        1 | 2 =&gt; {
+            println!("found 1 or 2!");
+        }
+        // 範囲にマッチ
+        3..=9 =&gt; {      //  ..= は、開始番号から終了番号までの数値を生成するイテレータを作成
+            println!("found a number 3 to 9 inclusively");
+        }
+        // マッチした数字を変数に束縛
+        matched_num @ 10..=100 =&gt; {
+            println!("found {} number between 10 to 100!", matched_num);
+        }
+        // どのパターンにもマッチしない場合のデフォルトマッチが必須
+        _ =&gt; {
+            println!("found something else!");
+        }
+    }
+}</code></pre></pre>
+<h2 id="ブロック式から値を返す"><a class="header" href="#ブロック式から値を返す">ブロック式から値を返す。</a></h2>
+<p><code>if</code>、<code>match</code>、関数、ブロックの最後が<code>;</code>のない式であれば、戻り値として使用される。</p>
+<pre><pre class="playground"><code class="language-rust">fn example() -&gt; i32 {
+    let x = 42;
+    // Rust の三項式
+    let v = if x &lt; 42 { -1 } else { 1 };        // if文を三項演算子のように使用できる
+    println!("if より: {}", v);
+
+    let food = "ハンバーガー";
+    let result = match food {
+        "ホットドッグ" =&gt; "ホットドッグです",
+        // 単一の式で値を返す場合、中括弧は省略可能
+        _ =&gt; "ホットドッグではありません",
+    };
+    println!("食品の識別: {}", result);
+
+    let v = {
+        // ブロックのスコープは関数のスコープから分離されている
+        let a = 1;
+        let b = 2;
+        a + b
+    };
+    println!("ブロックより: {}", v);
+
+    // Rust で関数の最後から値を返す慣用的な方法
+    v + 4
+}
+
+fn main() {
+    println!("関数より: {}", example());
+}</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next prefetch" href="for.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -189,7 +274,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next prefetch" href="for.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

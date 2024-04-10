@@ -1,0 +1,810 @@
+<!DOCTYPE HTML>
+<html lang="ja" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="イントロ"><a class="header" href="#イントロ">イントロ</a></h1>
+<p>RUSTしたいけど、あんまり時間取れないので、ゆっくり学習を進めるための備忘録兼俺的マニュアル。</p>
+<h2 id="参考文献"><a class="header" href="#参考文献">参考文献</a></h2>
+<p><a href="https://doc.rust-jp.rs/book-ja/">The Rust Programming Language 日本語版</a>に沿ってやっていく。</p>
+<p>まずは<a href="https://tourofrust.com/00_ja.html">rustツアー</a>がいいかも。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="インストールとか"><a class="header" href="#インストールとか">インストールとか</a></h1>
+<h2 id="install"><a class="header" href="#install">Install</a></h2>
+<pre><code class="language-bash">$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+</code></pre>
+<h2 id="update"><a class="header" href="#update">Update</a></h2>
+<pre><code class="language-bash">$ rustup update
+</code></pre>
+<h2 id="uninstall"><a class="header" href="#uninstall">uninstall</a></h2>
+<pre><code class="language-bash">$ rustup self uninstall
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cargo"><a class="header" href="#cargo">Cargo</a></h1>
+<p>CargoはRustのビルドシステム兼パッケージマネージャ。</p>
+<ul>
+<li><code>cargo new</code>を使ってプロジェクトを作成できる
+<ul>
+<li>利用可能なオプションを確認するには<code>cargo new --help</code>を実行。</li>
+</ul>
+</li>
+<li><code>cargo build</code>を使ってプロジェクトをビルドできる。<code>target/debug</code>に作成される。</li>
+<li><code>cargo build --release</code>でリリース版をビルド。<code>target/release</code>に作成される。</li>
+<li><code>cargo run</code>を使うとプロジェクトのビルドと実行を1ステップで行える</li>
+<li><code>cargo check</code>を使うとバイナリを生成せずにプロジェクトをビルドして、エラーがないか確認できる</li>
+<li><code>cargo update</code>：クレートをアップグレード</li>
+<li><code>cargo doc --open</code>: すべての依存クレートが提供するドキュメントをローカルでビルドしてブラウザで開く</li>
+<li><code>cargo search</code>: クレートの最新バージョンを検索</li>
+</ul>
+<pre><code class="language-bash">$ cargo --version
+</code></pre>
+<h2 id="プロジェクトの作成"><a class="header" href="#プロジェクトの作成">プロジェクトの作成</a></h2>
+<pre><code class="language-bash">$ cargo new hello
+$ cd hello
+</code></pre>
+<h3 id="cargotoml"><a class="header" href="#cargotoml">Cargo.toml</a></h3>
+<p>Cargoの設定フォーマット</p>
+<pre><code class="language-toml title=&quot;Cargo.toml&quot;">[package]
+name = "hello"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+</code></pre>
+<h3 id="srcmainrs"><a class="header" href="#srcmainrs">src/main.rs</a></h3>
+<pre><pre class="playground"><code class="language-rust title=&quot;src/main.rs&quot;">fn main() {
+    println!("Hello, world!");
+}</code></pre></pre>
+<h2 id="プロジェクトのビルドと実行"><a class="header" href="#プロジェクトのビルドと実行">プロジェクトのビルドと実行</a></h2>
+<h3 id="ビルド"><a class="header" href="#ビルド">ビルド</a></h3>
+<pre><code class="language-bash">$ cargo build
+   Compiling hello v0.1.0 (/Users/ky/Desktop/rust/test/hello)
+    Finished dev [unoptimized + debuginfo] target(s) in 3.51s
+</code></pre>
+<p>実行ファイル<code>target/debug/hello</code>が生成される。</p>
+<pre><code class="language-bash">$ ./target/debug/hello
+Hello, world!
+</code></pre>
+<h3 id="runビルドと実行"><a class="header" href="#runビルドと実行">run（ビルドと実行）</a></h3>
+<pre><code class="language-bash">$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/hello`
+Hello, world!
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="変数"><a class="header" href="#変数">変数</a></h1>
+<h2 id="宣言"><a class="header" href="#宣言">宣言</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 5;  // 不変変数
+x = 6;      // エラー
+
+let mut y = 5;  // mut で可変に
+y = 7;          // OK
+
+const MAX_POINTS: u32 = 100_000;    // 定数
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li>変数名にはスネークケース<code>snake_case</code>を使用</li>
+<li>定数名には大文字のスネークケース<code>SCREAMING_SNAKE_CASE</code>を使用。</li>
+</ul>
+<h2 id="シャドーイング"><a class="header" href="#シャドーイング">シャドーイング</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 5;
+let x = x + 1;      // シャドーイング, xを覆い隠せる
+{
+    let x = x * 2;
+    println!("The value of x in the inner scope is: {}", x);    // 12
+}
+
+println!("The value of x is: {}", x);   // 6
+<span class="boring">}</span></code></pre></pre>
+<p><code>mut</code>と上書きのもう一つの違いは、再度<code>let</code>キーワードを使用したら、実効的には新しい変数を生成していることになるので、 値の型を変えつつ、同じ変数名を使いまわせる。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let spaces = "   ";
+let spaces = spaces.len();
+<span class="boring">}</span></code></pre></pre>
+<p><code>mut</code>だとエラーになる。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut spaces = "   ";
+spaces = spaces.len();      // エラー
+<span class="boring">}</span></code></pre></pre>
+<h2 id="データ型"><a class="header" href="#データ型">データ型</a></h2>
+<h3 id="基本的な型"><a class="header" href="#基本的な型">基本的な型</a></h3>
+<ul>
+<li>ブール型 - bool は true または false を表します</li>
+<li>符号なし整数型 - u8 u32 u64 u128 は正の整数を表します</li>
+<li>符号付き整数型 - i8 i32 i64 i128 は正と負の整数を表します</li>
+<li>ポインタサイズ整数型 - usize isize はメモリ内のインデックスとサイズを表します</li>
+<li>浮動小数点数型 - f32 f64</li>
+<li>タプル型 - (value, value, ...) スタック上の固定された値の組を渡すために使用されます</li>
+<li>配列型 - コンパイル時に長さが決まる同じ要素のコレクション</li>
+<li>スライス型 - 実行時に長さが決まる同じ要素のコレクション</li>
+<li>str(string slice) - 実行時に長さが決まるテキスト</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>bool			// 真偽値(true/false)
+i8			// 符号付き8ビット整数
+u8			// 符号無し8ビット整数
+i16			// 符号付き16ビット整数
+u16			// 符号無し16ビット整数
+i32			// 符号付き32ビット整数
+u32			// 符号無し32ビット整数
+i64			// 符号付き64ビット整数
+u64			// 符号無し64ビット整数
+i128			// 符号付き128ビット整数
+u128			// 符号無し128ビット整数
+isize			// ポインタサイズと同じ符号付き整数
+usize			// ポインタサイズと同じ符号無し整数
+f32			// 32ビット浮動小数点数
+f64			// 64ビット浮動小数点数
+char			// 文字(U+0000～U+D7FF, U+E000～U+10FFFF)
+str			// 文字列(&amp;strとして使用することが多い)
+(type, type, ...)	// タプル
+[type; len]		// 配列
+Vec&lt;type&gt;		// ベクタ
+&amp;type			// typeへの参照
+&amp;mut type		// typeへのミュータブルな参照
+&amp;[type]			// type型要素を持つスライス
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 12; // デフォルトでは i32
+let a = 12u8;  // 数値の後に型を付加することでも指定できる。
+let b = 4.3; // デフォルトでは f64
+let c = 4.3f32;
+let bv = true;
+let t = (13, false);
+let sentence = "hello world!";
+println!(
+    "{} {} {} {} {} {} {} {}",
+    x, a, b, c, bv, t.0, t.1, sentence
+);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="型変換"><a class="header" href="#型変換">型変換</a></h3>
+<p><code>as</code>を使う。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let a = 13u8;
+let b = 7u32;
+let c = a as u32 + b;   // u8とu32を混ぜるとエラー。型変換必要
+println!("{}", c);
+
+let t = true;
+println!("{}", t as u8);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="配列"><a class="header" href="#配列">配列</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let nums: [i32; 3] = [1, 2, 3];
+println!("{:?}", nums);
+println!("{}", nums[1]);
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="関数"><a class="header" href="#関数">関数</a></h1>
+<p>関数名にはスネークケース<code>snake_case</code>を使用。</p>
+<pre><pre class="playground"><code class="language-rust">fn add(x: i32, y: i32) -&gt; i32 {
+    return x + y;
+}
+
+fn main() {
+    println!("{}", add(42, 13));
+}</code></pre></pre>
+<h2 id="戻り値"><a class="header" href="#戻り値">戻り値</a></h2>
+<p>関数、ブロックの最後が<code>;</code>のない式であれば、戻り値として使用される。(return省略。最後以外は省略できない。)</p>
+<pre><pre class="playground"><code class="language-rust">fn example() -&gt; i32 {
+    let v = {
+        // ブロックのスコープは関数のスコープから分離されている
+        let a = 1;
+        let b = 2;
+        a + b
+    };
+    println!("ブロックより: {}", v);
+
+    // Rust で関数の最後から値を返す慣用的な方法
+    v + 4
+}
+
+fn main() {
+    println!("関数より: {}", example());
+}</code></pre></pre>
+<h3 id="複数の戻り値"><a class="header" href="#複数の戻り値">複数の戻り値</a></h3>
+<p>値をタプルで返すことによって、複数の値を返せる。</p>
+<pre><pre class="playground"><code class="language-rust">fn swap(x: i32, y: i32) -&gt; (i32, i32) {
+    return (y, x);
+}
+
+fn main() {
+    // 戻り値をタプルで返す
+    let result = swap(123, 321);
+    println!("{} {}", result.0, result.1);
+
+    // タプルを2つの変数に分解
+    let (a, b) = swap(result.0, result.1);
+    println!("{} {}", a, b);
+}</code></pre></pre>
+<h3 id="空の戻り値"><a class="header" href="#空の戻り値">空の戻り値</a></h3>
+<p>関数に戻り値の型が指定されていない場合、unit と呼ばれる空のタプルを返す。</p>
+<p>空のタプルは <code>()</code> と表記する。</p>
+<pre><pre class="playground"><code class="language-rust">fn make_nothing() -&gt; () {
+    return ();
+}
+
+// 戻り値は () と推論
+fn make_nothing2() {
+    // この関数は戻り値が指定されないため () を返す
+}
+
+fn main() {
+    let a = make_nothing();
+    let b = make_nothing2();
+
+    // 空を表示するのは難しいので、
+    // a と b のデバッグ文字列を表示
+    println!("a の値: {:?}", a);
+    println!("b の値: {:?}", b);
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="if"><a class="header" href="#if">if</a></h1>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 42;
+    if x &lt; 42 {
+        println!("42 より小さい");
+    } else if x == 42 {
+        println!("42 に等しい");
+    } else {
+        println!("42 より大きい");
+    }
+}</code></pre></pre>
+<h2 id="比較演算子"><a class="header" href="#比較演算子">比較演算子</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>例</th><th>説明</th><th>オーバーロードできる？</th></tr></thead><tbody>
+<tr><td>==</td><td>expr == expr</td><td>等価比較</td><td>PartialEq</td></tr>
+<tr><td>!=</td><td>var != expr</td><td>非等価比較</td><td>PartialEq</td></tr>
+<tr><td>&lt;</td><td>expr &lt; expr</td><td>未満比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;</td><td>expr &gt; expr</td><td>より大きい比較</td><td>PartialOrd</td></tr>
+<tr><td>&lt;=</td><td>expr &lt;= expr</td><td>以下比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;=</td><td>expr &gt;= expr</td><td>以上比較</td><td>PartialOrd</td></tr>
+<tr><td>!</td><td>!expr</td><td>ビット反転、または論理反転</td><td>Not</td></tr>
+<tr><td>&amp;&amp;</td><td>expr &amp;&amp; expr</td><td>論理AND</td><td></td></tr>
+<tr><td>||</td><td>expr || expr</td><td>論理OR</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="match"><a class="header" href="#match">match</a></h2>
+<p>値が取り得るすべての条件にマッチさせて、マッチが真であればコードパスを実行する。</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 42;
+
+    match x {
+        0 =&gt; {
+            println!("found zero");
+        }
+        // 複数の値にマッチ
+        1 | 2 =&gt; {
+            println!("found 1 or 2!");
+        }
+        // 範囲にマッチ
+        3..=9 =&gt; {      //  ..= は、開始番号から終了番号までの数値を生成するイテレータを作成
+            println!("found a number 3 to 9 inclusively");
+        }
+        // マッチした数字を変数に束縛
+        matched_num @ 10..=100 =&gt; {
+            println!("found {} number between 10 to 100!", matched_num);
+        }
+        // どのパターンにもマッチしない場合のデフォルトマッチが必須
+        _ =&gt; {
+            println!("found something else!");
+        }
+    }
+}</code></pre></pre>
+<h2 id="ブロック式から値を返す"><a class="header" href="#ブロック式から値を返す">ブロック式から値を返す。</a></h2>
+<p><code>if</code>、<code>match</code>、関数、ブロックの最後が<code>;</code>のない式であれば、戻り値として使用される。</p>
+<pre><pre class="playground"><code class="language-rust">fn example() -&gt; i32 {
+    let x = 42;
+    // Rust の三項式
+    let v = if x &lt; 42 { -1 } else { 1 };        // if文を三項演算子のように使用できる
+    println!("if より: {}", v);
+
+    let food = "ハンバーガー";
+    let result = match food {
+        "ホットドッグ" =&gt; "ホットドッグです",
+        // 単一の式で値を返す場合、中括弧は省略可能
+        _ =&gt; "ホットドッグではありません",
+    };
+    println!("食品の識別: {}", result);
+
+    let v = {
+        // ブロックのスコープは関数のスコープから分離されている
+        let a = 1;
+        let b = 2;
+        a + b
+    };
+    println!("ブロックより: {}", v);
+
+    // Rust で関数の最後から値を返す慣用的な方法
+    v + 4
+}
+
+fn main() {
+    println!("関数より: {}", example());
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="for"><a class="header" href="#for">for</a></h1>
+<p>イテレータとして評価される式を反復処理。</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    for x in 0..5 {
+        println!("{}", x);
+    }
+
+    for x in 0..=5 {
+        println!("{}", x);
+    }
+}</code></pre></pre>
+<ul>
+<li><code>..</code>演算子は、開始番号から終了番号の手前までの数値を生成するイテレータを作成する。</li>
+<li><code>..=</code>演算子は、開始番号から終了番号までの数値を生成するイテレータを作成する。</li>
+</ul>
+<h2 id="loop"><a class="header" href="#loop">loop</a></h2>
+<h3 id="無限ループ"><a class="header" href="#無限ループ">無限ループ</a></h3>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let mut x = 0;
+    loop {
+        x += 1;
+        if x == 42 {
+            break;
+        }
+    }
+    println!("{}", x);
+}</code></pre></pre>
+<h3 id="break-抜けて値を返すことができる"><a class="header" href="#break-抜けて値を返すことができる"><code>break</code> 抜けて値を返すことができる。</a></h3>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let mut x = 0;
+    let v = loop {
+        x += 1;
+        if x == 13 {
+            break "13 を発見";
+        }
+    };
+    println!("loop の戻り値: {}", v);
+}</code></pre></pre>
+<h2 id="while"><a class="header" href="#while">while</a></h2>
+<p>条件が<code>false</code>と評価されたらループを終了。</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let mut x = 0;
+    while x != 42 {
+        x += 1;
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="メモリ"><a class="header" href="#メモリ">メモリ</a></h1>
+<p>Rustは、データを保持するために次の3種類のメモリ空間を持っている。</p>
+<ul>
+<li>データメモリ - 固定長もしくは スタティック (例: プログラムのライフサイクルで常に存在するもの)なデータ。 プログラム内の文字列(例: ‘Hello World’)、 この文字列のキャラクタは読み取りにしか使えないため、この領域に入る。 コンパイラはこういったデータに対してチューニングをしており、メモリ上の位置はすでに知られていてかつ固定であるため、非常に速く使うことができる。</li>
+<li>スタックメモリ - 関数内で宣言された変数。 関数が呼び出されている間は、メモリ上の位置は変更されることがないため、コンパイラからするとチューニングができるので、スタックメモリも非常に速くデータにアクセスできる。</li>
+<li>ヒープメモリ - プログラムの実行時に作られるデータ。 このメモリにあるデータは追加、移動、削除、サイズの調節などの操作が許されている。動的であるため、遅いと思われがちだが、 これによりメモリの使い方に柔軟性を生み出すことができる。データをヒープメモリに入れることをアロケーション(allocation)といい、データをヒープメモリから削除することはディアロケーション(deallocation)と言う。</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="構造体"><a class="header" href="#構造体">構造体</a></h1>
+<ul>
+<li>一つの<code>struct</code>はフィールドの集合</li>
+<li>フィールドとはデータ構造とキーワードを紐付ける値。その値はプリミティブ型かデータ構造を指定可能。</li>
+<li>その定義はメモリ上で隣合うデータの配置をコンパイラに伝える設計図の様なもの</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct SeaCreature {
+    // String は構造体である。
+    animal_type: String,
+    name: String,
+    arms: i32,
+    legs: i32,
+    weapon: String,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="メソッド"><a class="header" href="#メソッド">メソッド</a></h2>
+<ul>
+<li>関数(function)と違って、メソッド(method)は特定のデータ型と紐づく関数のこと。</li>
+<li>スタティックメソッド - ある型そのものに紐付き、演算子<code>::</code>で呼び出せる。</li>
+<li>インスタンスメソッド - ある型のインスタンスに紐付き、演算子<code>.</code>で呼び出せる。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    // スタティックメソッドでStringインスタンスを作成する。
+    let s = String::from("Hello world!");
+    // インスタンスを使ってメソッド呼び出す。
+    println!("{} is {} characters long.", s, s.len());
+}</code></pre></pre>
+<h2 id="構造体とメモリ"><a class="header" href="#構造体とメモリ">構造体とメモリ</a></h2>
+<ul>
+<li>コードの中で構造体をインスタンス化する際、フィールドデータはメモリ上で隣り合うように作成される。</li>
+<li>全てのフィールドの値を指定してインスタンス化をする場合、<code>let 変数名 = 構造体名 {...};</code></li>
+<li>構造体のフィールドは演算子<code>.</code>で取り出す。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">struct SeaCreature {
+    animal_type: String,
+    name: String,
+    arms: i32,
+    legs: i32,
+    weapon: String,
+}
+
+fn main() {
+    // SeaCreatureのデータはスタックに入る。
+    let ferris = SeaCreature {
+        // String構造体もスタックに入るが、ヒープに入るデータの参照アドレスが一つ入る。
+        animal_type: String::from("crab"),
+        name: String::from("Ferris"),
+        arms: 2,
+        legs: 4,
+        weapon: String::from("claw"),
+    };
+
+    let sarah = SeaCreature {
+        animal_type: String::from("octopus"),
+        name: String::from("Sarah"),
+        arms: 8,
+        legs: 0,
+        weapon: String::from("none"),
+    };
+    
+    println!(
+        "{} is a {}. They have {} arms, {} legs, and a {} weapon",
+        ferris.name, ferris.animal_type, ferris.arms, ferris.legs, ferris.weapon
+    );
+    println!(
+        "{} is a {}. They have {} arms, and {} legs. They have no weapon..",
+        sarah.name, sarah.animal_type, sarah.arms, sarah.legs
+    );
+}</code></pre></pre>
+<ul>
+<li>ダブルクオートに囲まれたテキスト(例: "Ferris")は読み取り専用データであるため、データメモリに入る。</li>
+<li>関数の呼び出し<code>String::from</code>では構造体<code>String</code>を作成し、この構造体と<code>SeaCreature</code>のフィールドは隣り合う形でスタックに入れられる。フィールドの値は変更可能であり、メモリ上では以下の様に変更される。
+<ol>
+<li>ヒープに変更可能なメモリを作り、テキストを入れる。</li>
+<li>1.で作成した参照アドレスをヒープに保存し、それを<code>String</code>に保存。</li>
+</ol>
+</li>
+<li>最後に、<code>Ferris</code>と<code>Sarah</code>はプログラムの中では固定な位置であるため、スタックに入る。</li>
+</ul>
+<h2 id="タプルライクな構造体"><a class="header" href="#タプルライクな構造体">タプルライクな構造体</a></h2>
+<pre><pre class="playground"><code class="language-rust">struct Location(i32, i32);
+
+fn main() {
+    // これもスタックに入れられる構造体。
+    let loc = Location(42, 32);
+    println!("{}, {}", loc.0, loc.1);
+}</code></pre></pre>
+<h2 id="ユニットライクな構造体"><a class="header" href="#ユニットライクな構造体">ユニットライクな構造体</a></h2>
+<ul>
+<li>フィールドを持たない構造体。</li>
+<li><code>unit</code>は空ユニット()の別名称。</li>
+<li>あまり使われない。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">struct Marker;
+
+fn main() {
+    let _m = Marker;
+}</code></pre></pre>
+<h2 id="列挙型"><a class="header" href="#列挙型">列挙型</a></h2>
+<ul>
+<li>キーワード<code>enum</code>で新しい型を生成することができる。</li>
+<li>いくつかのタグ付された値を持つことができる。</li>
+<li><code>match</code>は保有する全ての列挙値を処理する手助けすることができ、コードの品質を維持することができる。</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">#![allow(dead_code)] // この行でコンパイラのwaringsメッセージを止める。
+
+enum Species {
+    Crab,
+    Octopus,
+    Fish,
+    Clam
+}
+
+struct SeaCreature {
+    species: Species,
+    name: String,
+    arms: i32,
+    legs: i32,
+    weapon: String,
+}
+
+fn main() {
+    let ferris = SeaCreature {
+        species: Species::Crab,
+        name: String::from("Ferris"),
+        arms: 2,
+        legs: 4,
+        weapon: String::from("claw"),
+    };
+
+    match ferris.species {
+        Species::Crab =&gt; println!("{} is a crab",ferris.name),
+        Species::Octopus =&gt; println!("{} is a octopus",ferris.name),
+        Species::Fish =&gt; println!("{} is a fish",ferris.name),
+        Species::Clam =&gt; println!("{} is a clam",ferris.name),
+    }
+}</code></pre></pre>
+<h2 id="データを持つ列挙型"><a class="header" href="#データを持つ列挙型">データを持つ列挙型</a></h2>
+<ul>
+<li><code>enum</code>は一個もしくは複数な型のデータを持つことができ、C言語の<code>union</code>の様な表現ができる。</li>
+<li><code>match</code>を用いて列挙値に対するパターンマッチングを行う際、各データを変数名に束縛することができる。</li>
+<li>列挙 のメモリ事情:
+<ul>
+<li>列挙型のメモリサイズはそれが持つ最大要素のサイズと等しい。これにより全ての代入可能な値が同じサイズのメモリ空間を利用することが可能。</li>
+<li>要素の型以外に、各要素には数字値がついており、どのタグであるかについて示している。</li>
+</ul>
+</li>
+<li>その他の事情:
+<ul>
+<li>Rustの列挙はtagged-unionとも言われる。</li>
+<li>複数の型を組み合わせて新しい型を作ることができる。Rustがalgebraic typesを持つと言われる理由。</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="演算子"><a class="header" href="#演算子">演算子</a></h1>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>例</th><th>説明</th><th>オーバーロードできる？</th></tr></thead><tbody>
+<tr><td>!</td><td>ident!(...), ident!{...}, ident![...]</td><td>マクロ展開</td><td></td></tr>
+<tr><td>!</td><td>!expr</td><td>ビット反転、または論理反転</td><td>Not</td></tr>
+<tr><td>!=</td><td>var != expr</td><td>非等価比較</td><td>PartialEq</td></tr>
+<tr><td>%</td><td>expr % expr</td><td>余り演算</td><td>Rem</td></tr>
+<tr><td>%=</td><td>var %= expr</td><td>余り演算後に代入</td><td>RemAssign</td></tr>
+<tr><td>&amp;</td><td>&amp;expr, &amp;mut expr</td><td>借用</td><td></td></tr>
+<tr><td>&amp;</td><td>&amp;type, &amp;mut type, &amp;'a type, &amp;'a mut type</td><td>借用されたポインタ型</td><td></td></tr>
+<tr><td>&amp;</td><td>expr &amp; expr</td><td>ビットAND</td><td>BitAnd</td></tr>
+<tr><td>&amp;=</td><td>var &amp;= expr</td><td>ビットAND後に代入</td><td>BitAndAssign</td></tr>
+<tr><td>&amp;&amp;</td><td>expr &amp;&amp; expr</td><td>論理AND</td><td></td></tr>
+<tr><td>*</td><td>expr * expr</td><td>掛け算</td><td>Mul</td></tr>
+<tr><td>*</td><td>*expr</td><td>参照外し</td><td></td></tr>
+<tr><td>*</td><td>*const type, *mut type</td><td>生ポインタ</td><td></td></tr>
+<tr><td>*=</td><td>var *= expr</td><td>掛け算後に代入</td><td>MulAssign</td></tr>
+<tr><td>+</td><td>trait + trait, 'a + trait</td><td>型制限の複合化</td><td></td></tr>
+<tr><td>+</td><td>expr + expr</td><td>足し算</td><td>Add</td></tr>
+<tr><td>+=</td><td>var += expr</td><td>足し算後に代入</td><td>AddAssign</td></tr>
+<tr><td>,</td><td>expr, expr</td><td>引数と要素の区別</td><td></td></tr>
+<tr><td>-</td><td>- expr</td><td>算術否定</td><td>Neg</td></tr>
+<tr><td>-</td><td>expr - expr</td><td>引き算</td><td>Sub</td></tr>
+<tr><td>-=</td><td>var -= expr</td><td>引き算後に代入</td><td>SubAssign</td></tr>
+<tr><td>-&gt;</td><td>fn(...) -&gt; type, |...| -&gt; type</td><td>関数とクロージャの戻り値型</td><td></td></tr>
+<tr><td>.</td><td>expr.ident</td><td>メンバーアクセス</td><td></td></tr>
+<tr><td>..</td><td>.., expr.., ..expr, expr..expr</td><td>未満範囲リテラル</td><td></td></tr>
+<tr><td>..</td><td>..expr</td><td>構造体リテラル更新記法</td><td></td></tr>
+<tr><td>..</td><td>variant(x, ..), struct_type { x, .. }</td><td>「残り全部」パターン束縛</td><td></td></tr>
+<tr><td>...</td><td>expr...expr</td><td>パターンで: 以下範囲パターン</td><td></td></tr>
+<tr><td>/</td><td>expr / expr</td><td>割り算</td><td>Div</td></tr>
+<tr><td>/=</td><td>var /= expr</td><td>割り算後に代入</td><td>DivAssign</td></tr>
+<tr><td>:</td><td>pat: type, ident: type</td><td>型制約</td><td></td></tr>
+<tr><td>:</td><td>ident: expr</td><td>構造体フィールド初期化子</td><td></td></tr>
+<tr><td>:</td><td>'a: loop {...}</td><td>ループラベル</td><td></td></tr>
+<tr><td>;</td><td>expr;</td><td>文、要素終端子</td><td></td></tr>
+<tr><td>;</td><td>[...; len]</td><td>固定長配列記法の一部</td><td></td></tr>
+<tr><td>&lt;&lt;</td><td>expr &lt;&lt; expr</td><td>左シフト</td><td>Shl</td></tr>
+<tr><td>&lt;&lt;=</td><td>var &lt;&lt;= expr</td><td>左シフト後に代入</td><td>ShlAssign</td></tr>
+<tr><td>&lt;</td><td>expr &lt; expr</td><td>未満比較</td><td>PartialOrd</td></tr>
+<tr><td>&lt;=</td><td>expr &lt;= expr</td><td>以下比較</td><td>PartialOrd</td></tr>
+<tr><td>=</td><td>var = expr, ident = type</td><td>代入/等価</td><td></td></tr>
+<tr><td>==</td><td>expr == expr</td><td>等価比較</td><td>PartialEq</td></tr>
+<tr><td>=&gt;</td><td>pat =&gt; expr</td><td>matchアーム記法の一部</td><td></td></tr>
+<tr><td>&gt;</td><td>expr &gt; expr</td><td>より大きい比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;=</td><td>expr &gt;= expr</td><td>以上比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;&gt;</td><td>expr &gt;&gt; expr</td><td>右シフト</td><td>Shr</td></tr>
+<tr><td>&gt;&gt;=</td><td>var &gt;&gt;= expr</td><td>右シフト後に代入</td><td>ShrAssign</td></tr>
+<tr><td>@</td><td>ident @ pat</td><td>パターン束縛</td><td></td></tr>
+<tr><td>^</td><td>expr ^ expr</td><td>ビットXOR</td><td>BitXor</td></tr>
+<tr><td>^=</td><td>var ^= expr</td><td>ビットXOR後に代入</td><td>BitXorAssign</td></tr>
+<tr><td>|</td><td>pat | pat</td><td>パターンOR</td><td></td></tr>
+<tr><td>|</td><td>|…| expr</td><td>クロージャ</td><td></td></tr>
+<tr><td>|</td><td>expr | expr</td><td>ビットOR</td><td>BitOr</td></tr>
+<tr><td>|=</td><td>var |= expr</td><td>ビットOR後に代入</td><td>BitOrAssign</td></tr>
+<tr><td>||</td><td>expr || expr</td><td>論理OR</td><td></td></tr>
+<tr><td>?</td><td>expr?</td><td>エラー委譲</td><td></td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_rust=self.webpackChunkmy_rust||[]).push([[535],{5641:s=>{s.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"First Blog","permalink":"/my-rust/blog/first-blog","unlisted":false}]}')}}]);

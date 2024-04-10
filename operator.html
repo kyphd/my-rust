@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found</title>
-        <base href="/">
+        <title>演算子</title>
 
 
         <!-- Custom HTML head -->
@@ -89,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> イントロ</a></li><li class="chapter-item expanded "><a href="install.html"><strong aria-hidden="true">2.</strong> インストールとか</a></li><li class="chapter-item expanded "><a href="cargo.html"><strong aria-hidden="true">3.</strong> Cargo</a></li><li class="chapter-item expanded "><a href="variable.html"><strong aria-hidden="true">4.</strong> 変数</a></li><li class="chapter-item expanded "><a href="function.html"><strong aria-hidden="true">5.</strong> 関数</a></li><li class="chapter-item expanded "><a href="if.html"><strong aria-hidden="true">6.</strong> if</a></li><li class="chapter-item expanded "><a href="for.html"><strong aria-hidden="true">7.</strong> for</a></li><li class="chapter-item expanded "><a href="memory.html"><strong aria-hidden="true">8.</strong> メモリ</a></li><li class="chapter-item expanded "><a href="struct.html"><strong aria-hidden="true">9.</strong> 構造体</a></li><li class="chapter-item expanded "><a href="operator.html" class="active"><strong aria-hidden="true">10.</strong> 演算子</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,13 +173,71 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
-
+                        <h1 id="演算子"><a class="header" href="#演算子">演算子</a></h1>
+<div class="table-wrapper"><table><thead><tr><th>演算子</th><th>例</th><th>説明</th><th>オーバーロードできる？</th></tr></thead><tbody>
+<tr><td>!</td><td>ident!(...), ident!{...}, ident![...]</td><td>マクロ展開</td><td></td></tr>
+<tr><td>!</td><td>!expr</td><td>ビット反転、または論理反転</td><td>Not</td></tr>
+<tr><td>!=</td><td>var != expr</td><td>非等価比較</td><td>PartialEq</td></tr>
+<tr><td>%</td><td>expr % expr</td><td>余り演算</td><td>Rem</td></tr>
+<tr><td>%=</td><td>var %= expr</td><td>余り演算後に代入</td><td>RemAssign</td></tr>
+<tr><td>&amp;</td><td>&amp;expr, &amp;mut expr</td><td>借用</td><td></td></tr>
+<tr><td>&amp;</td><td>&amp;type, &amp;mut type, &amp;'a type, &amp;'a mut type</td><td>借用されたポインタ型</td><td></td></tr>
+<tr><td>&amp;</td><td>expr &amp; expr</td><td>ビットAND</td><td>BitAnd</td></tr>
+<tr><td>&amp;=</td><td>var &amp;= expr</td><td>ビットAND後に代入</td><td>BitAndAssign</td></tr>
+<tr><td>&amp;&amp;</td><td>expr &amp;&amp; expr</td><td>論理AND</td><td></td></tr>
+<tr><td>*</td><td>expr * expr</td><td>掛け算</td><td>Mul</td></tr>
+<tr><td>*</td><td>*expr</td><td>参照外し</td><td></td></tr>
+<tr><td>*</td><td>*const type, *mut type</td><td>生ポインタ</td><td></td></tr>
+<tr><td>*=</td><td>var *= expr</td><td>掛け算後に代入</td><td>MulAssign</td></tr>
+<tr><td>+</td><td>trait + trait, 'a + trait</td><td>型制限の複合化</td><td></td></tr>
+<tr><td>+</td><td>expr + expr</td><td>足し算</td><td>Add</td></tr>
+<tr><td>+=</td><td>var += expr</td><td>足し算後に代入</td><td>AddAssign</td></tr>
+<tr><td>,</td><td>expr, expr</td><td>引数と要素の区別</td><td></td></tr>
+<tr><td>-</td><td>- expr</td><td>算術否定</td><td>Neg</td></tr>
+<tr><td>-</td><td>expr - expr</td><td>引き算</td><td>Sub</td></tr>
+<tr><td>-=</td><td>var -= expr</td><td>引き算後に代入</td><td>SubAssign</td></tr>
+<tr><td>-&gt;</td><td>fn(...) -&gt; type, |...| -&gt; type</td><td>関数とクロージャの戻り値型</td><td></td></tr>
+<tr><td>.</td><td>expr.ident</td><td>メンバーアクセス</td><td></td></tr>
+<tr><td>..</td><td>.., expr.., ..expr, expr..expr</td><td>未満範囲リテラル</td><td></td></tr>
+<tr><td>..</td><td>..expr</td><td>構造体リテラル更新記法</td><td></td></tr>
+<tr><td>..</td><td>variant(x, ..), struct_type { x, .. }</td><td>「残り全部」パターン束縛</td><td></td></tr>
+<tr><td>...</td><td>expr...expr</td><td>パターンで: 以下範囲パターン</td><td></td></tr>
+<tr><td>/</td><td>expr / expr</td><td>割り算</td><td>Div</td></tr>
+<tr><td>/=</td><td>var /= expr</td><td>割り算後に代入</td><td>DivAssign</td></tr>
+<tr><td>:</td><td>pat: type, ident: type</td><td>型制約</td><td></td></tr>
+<tr><td>:</td><td>ident: expr</td><td>構造体フィールド初期化子</td><td></td></tr>
+<tr><td>:</td><td>'a: loop {...}</td><td>ループラベル</td><td></td></tr>
+<tr><td>;</td><td>expr;</td><td>文、要素終端子</td><td></td></tr>
+<tr><td>;</td><td>[...; len]</td><td>固定長配列記法の一部</td><td></td></tr>
+<tr><td>&lt;&lt;</td><td>expr &lt;&lt; expr</td><td>左シフト</td><td>Shl</td></tr>
+<tr><td>&lt;&lt;=</td><td>var &lt;&lt;= expr</td><td>左シフト後に代入</td><td>ShlAssign</td></tr>
+<tr><td>&lt;</td><td>expr &lt; expr</td><td>未満比較</td><td>PartialOrd</td></tr>
+<tr><td>&lt;=</td><td>expr &lt;= expr</td><td>以下比較</td><td>PartialOrd</td></tr>
+<tr><td>=</td><td>var = expr, ident = type</td><td>代入/等価</td><td></td></tr>
+<tr><td>==</td><td>expr == expr</td><td>等価比較</td><td>PartialEq</td></tr>
+<tr><td>=&gt;</td><td>pat =&gt; expr</td><td>matchアーム記法の一部</td><td></td></tr>
+<tr><td>&gt;</td><td>expr &gt; expr</td><td>より大きい比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;=</td><td>expr &gt;= expr</td><td>以上比較</td><td>PartialOrd</td></tr>
+<tr><td>&gt;&gt;</td><td>expr &gt;&gt; expr</td><td>右シフト</td><td>Shr</td></tr>
+<tr><td>&gt;&gt;=</td><td>var &gt;&gt;= expr</td><td>右シフト後に代入</td><td>ShrAssign</td></tr>
+<tr><td>@</td><td>ident @ pat</td><td>パターン束縛</td><td></td></tr>
+<tr><td>^</td><td>expr ^ expr</td><td>ビットXOR</td><td>BitXor</td></tr>
+<tr><td>^=</td><td>var ^= expr</td><td>ビットXOR後に代入</td><td>BitXorAssign</td></tr>
+<tr><td>|</td><td>pat | pat</td><td>パターンOR</td><td></td></tr>
+<tr><td>|</td><td>|…| expr</td><td>クロージャ</td><td></td></tr>
+<tr><td>|</td><td>expr | expr</td><td>ビットOR</td><td>BitOr</td></tr>
+<tr><td>|=</td><td>var |= expr</td><td>ビットOR後に代入</td><td>BitOrAssign</td></tr>
+<tr><td>||</td><td>expr || expr</td><td>論理OR</td><td></td></tr>
+<tr><td>?</td><td>expr?</td><td>エラー委譲</td><td></td></tr>
+</tbody></table>
+</div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="struct.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
 
                         <div style="clear: both"></div>
@@ -189,6 +246,9 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="struct.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
             </nav>
 
