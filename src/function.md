@@ -1,7 +1,3 @@
----
-sidebar_position: 5
----
-
 # 関数
 
 関数名にはスネークケース`snake_case`を使用。

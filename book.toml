@@ -1,0 +1,5 @@
+[book]
+authors = ["ky"]
+language = "ja"
+multilingual = false
+src = "src"

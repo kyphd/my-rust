@@ -1,7 +1,3 @@
----
-sidebar_position: 1000
----
-
 # 演算子
 
 

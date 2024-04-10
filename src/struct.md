@@ -1,7 +1,3 @@
----
-sidebar_position: 8
----
-
 # 構造体
 
 - 一つの`struct`はフィールドの集合

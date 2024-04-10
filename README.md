@@ -1,6 +1,8 @@
 # My Rust
 
-[Docusaurus](https://docusaurus.io/)で作っています。Thanks!
+~~[Docusaurus](https://docusaurus.io/)で作っています。Thanks!~~
+
+Rust/mdBookで作ってます。
 
 ### Deployment
 
